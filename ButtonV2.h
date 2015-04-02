@@ -90,21 +90,21 @@ class ButtonV2
 	  }
 	  
 	  // Check for Rollover
-      unsigned long RO_Time = millis(); // current time into RollOver variable
-      if (RO_Time < time) // is the RollOver variable smaller than ontime?
-        time = RO_Time; // if yes,  reset ontime to zero
+      unsigned long curTime = millis(); // current time into RollOver variable "curTime"
+      if (curTime < time) // is the RollOver variable smaller than ontime?
+        time = 0; // if yes,  reset ontime to zero
 		
-	  while ( (millis() - time) <= duration) 
+	  while ( ((curTime = millis()) - time) <= duration) 
 	  {
 		byte button = digitalRead(ButtonPin); // read the button
 		if (button != lastState) // see if the button is not held down.
 		{
 		  if (button == !State) // button was released
 		  {
-			if ((millis() - lastDebounceTime) >= DBInterval )  // button debounce, very important
+			if ((curTime - lastDebounceTime) >= DBInterval )  // button debounce, very important
 			{
 			  output++; // increment a counter, but only when the button is pressed then released
-			  lastDebounceTime = millis(); // update the debounce time
+			  lastDebounceTime = curTime; // update the debounce time
 			}
 		  }
 		  lastState = button; // update the buttons last state with it's new state
@@ -121,22 +121,22 @@ class ButtonV2
           break;
 		  
         case PRESSED:
-          if (*F_Pressed) 
+          if (F_Pressed) 
             F_Pressed();
           break;
 		  
         case DOUBLE_PRESSED:
-          if (*F_DPressed) 
+          if (F_DPressed) 
             F_DPressed();
           break;
 		  
         case MULTI_PRESSED:
-          if (*F_Mult)
+          if (F_Mult)
             F_Mult();
           break;
 		  
         case HELD:
-          if (*F_Hold) 
+          if (F_Hold) 
             F_Hold();
           break;
       }
