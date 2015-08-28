@@ -22,7 +22,7 @@ class ButtonV2
     byte 	State, lastState;
 	byte 	lastButtonState;
 	byte 	output, lastOut;
-	byte    _P;
+	
 	unsigned long   holdTime, DBInterval,RO_Time;
 	unsigned long 	time, duration, HeldTime;
 	unsigned long 	lastDebounceTime;
