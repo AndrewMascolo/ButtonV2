@@ -1,20 +1,25 @@
 #include<ButtonV2.h>
-ButtonV2 Button1;
 
-const byte ButtonPin = 2;
+#define numOfButtons 2
+ButtonV2 buttonArray[numOfButtons];
+
+const byte ButtonPins[numOfButtons] = {2, 3};
 
 void setup()
 {
   //pinMode(LEDpin, OUTPUT);
   pinMode(ButtonPin, INPUT_PULLUP);
   Serial.begin(115200);
-  Button1.SetStateAndTime(LOW);
+  for(byte n = 0; n < numOfButtons; n++)
+    buttonArray[n].SetStateAndTime(LOW);
   Serial.println("ready");
 }
 
 void loop()
 {
-  byte type = Button1.CheckButton(ButtonPin); // current time and length of time to press the button as many times as you can ie. 1.5 seconds
+  static byte i = 0;
+  
+  byte type = buttonArray[i].CheckButton(ButtonPins[i]); // current time and length of time to press the button as many times as you can ie. 1.5 seconds
   switch (type)
   {
     case WAITING:
@@ -32,4 +37,8 @@ void loop()
       Serial.println("Button HELD");
       break;
   }
+  
+  i++; 
+  if(i > (numOfButtons - 1) )
+    i = 0;
 }
